@@ -1,5 +1,5 @@
 const request = require("supertest");
-const app = require("../app"); // Assuming app.js exports the Express app
+const app = require("../app");
 const prisma = require("@prisma/client");
 
 describe("Auth Endpoints", () => {

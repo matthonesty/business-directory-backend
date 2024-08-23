@@ -7,7 +7,6 @@ exports.register = async (req, res) => {
   const { username, email, password, firstname, lastname } = req.body;
 
   try {
-    // Check if the username or email already exists
     const userByUsername = await prisma.user.findUnique({
       where: { username: username },
     });
