@@ -22,11 +22,9 @@ exports.register = async (req, res) => {
       return res.status(400).json({ message: "Email already registered" });
     }
 
-    // Hash the password
     const salt = bcrypt.genSaltSync(10);
     const passwordHash = bcrypt.hashSync(password, salt);
 
-    // Create the user
     const newUser = await prisma.user.create({
       data: {
         username,
@@ -37,7 +35,6 @@ exports.register = async (req, res) => {
       },
     });
 
-    // Create a JWT token
     const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
