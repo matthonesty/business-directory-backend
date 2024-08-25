@@ -1,17 +1,17 @@
 const express = require("express");
-const {
-  getProfile,
-  updateProfile,
-  deleteProfile,
-  changePassword,
-} = require("../controllers/userController");
-const authMiddleware = require("../middleware/authMiddleware");
-
 const router = express.Router();
+const userController = require("../controllers/userController");
+const authMiddleware = require("../middleware/authMiddleware"); // Ensure this path is correct
 
-router.get("/profile", authMiddleware, getProfile);
-router.put("/profile", authMiddleware, updateProfile);
-router.delete("/profile", authMiddleware, deleteProfile);
-router.put("/change-password", authMiddleware, changePassword);
+// Define routes
+router.post("/register", userController.register);
+router.post("/login", userController.login);
+router.get("/profile", authMiddleware, userController.getProfile);
+router.put("/profile", authMiddleware, userController.updateProfile);
+router.post("/forgot-password", userController.forgotPassword);
+router.post("/reset-password", userController.resetPassword);
+router.get("/test", (req, res) => {
+  res.send("Test route is working");
+});
 
 module.exports = router;
