@@ -3,16 +3,21 @@ const jwt = require("jsonwebtoken");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+const passwordValidation = (password) => {
+  const minLength = 8;
+  const hasLetter = /[a-zA-Z]/.test(password);
+  const hasCharacter = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  return password.length >= minLength && hasLetter && hasCharacter;
+};
+
 exports.register = async (req, res) => {
   const { username, email, password, firstname, lastname } = req.body;
 
   try {
     const userByUsername = await prisma.user.findUnique({
-      where: { username: username },
+      where: { username },
     });
-    const userByEmail = await prisma.user.findUnique({
-      where: { email: email },
-    });
+    const userByEmail = await prisma.user.findUnique({ where: { email } });
 
     if (userByUsername) {
       return res.status(400).json({ message: "Username already taken" });
@@ -20,6 +25,13 @@ exports.register = async (req, res) => {
 
     if (userByEmail) {
       return res.status(400).json({ message: "Email already registered" });
+    }
+
+    if (!passwordValidation(password)) {
+      return res.status(400).json({
+        message:
+          "Password must be at least 8 characters long and contain a letter and a special character",
+      });
     }
 
     const salt = bcrypt.genSaltSync(10);
@@ -49,9 +61,7 @@ exports.login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await prisma.user.findUnique({
-      where: { email: email },
-    });
+    const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user) {
       return res.status(400).json({ message: "Invalid credentials" });
