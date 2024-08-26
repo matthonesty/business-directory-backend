@@ -51,10 +51,15 @@ exports.register = async (req, res) => {
       expiresIn: "1h",
     });
 
-    res.status(201).json({ token, user: newUser });
-  } catch (error) {
-    res.status(500).json({ message: "Server error", error });
-  }
+  // Adding a success message to the response
+  res.status(201).json({
+    message: "User registered successfully",
+    token,
+    user: newUser,
+  });
+} catch (error) {
+  res.status(500).json({ message: "Server error", error });
+}
 };
 
 exports.login = async (req, res) => {
