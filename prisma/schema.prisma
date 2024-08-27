@@ -29,26 +29,67 @@ model User {
 
 // Business model
 model Business {
-  id                String     @id @default(uuid())
-  ownerId           String
-  businessName      String
-  brandName         String?
-  businessLicenseNumber String?
-  businessAddress   String?
-  businessPhone     String?
-  verified          Boolean    @default(false)
-  openingTime       DateTime?
-  closingTime       DateTime?
-  latitude          Decimal    @db.Decimal(9, 6) // Using Decimal
-  longitude         Decimal    @db.Decimal(9, 6) // Using Decimal
-  owner             User       @relation("BusinessOwner", fields: [ownerId], references: [id])
-  comments          Comment[]
-  ratings           Rating[]
-  favorites         Favorite[]
-  photos            Photo[]
-  createdAt         DateTime   @default(now())
-  updatedAt         DateTime   @updatedAt
+  id                     String     @id @default(uuid())
+  ownerId                String
+  businessName           String
+  brandName              String?
+  businessLicenseNumber  String?
+  businessAddress        String?
+  businessPhone          String?
+  businessEmail          String?   // Added field for business email
+  websiteUrl             String?   // Added field for business website
+  verified               Boolean    @default(false)
+  openingTime            DateTime?
+  closingTime            DateTime?
+  latitude               Decimal    @db.Decimal(10, 7) // Adjusted precision for more accuracy
+  longitude              Decimal    @db.Decimal(10, 7) // Adjusted precision for more accuracy
+  categoryId             String     // Added field to categorize businesses
+  subcategoryId          String?    // Optional subcategory
+  owner                  User       @relation("BusinessOwner", fields: [ownerId], references: [id])
+  comments               Comment[]
+  ratings                Rating[]
+  favorites              Favorite[]
+  photos                 Photo[]
+  socialMediaLinks       SocialMediaLink[] // Added relation to a new model for social media links
+  category               Category   @relation(fields: [categoryId], references: [id])  // Added relation to category
+  subcategory            SubCategory? @relation(fields: [subcategoryId], references: [id]) // Added relation to subcategory
+  services               Service[]  // Added relation to a new model for services offered
+  createdAt              DateTime   @default(now())
+  updatedAt              DateTime   @updatedAt
 }
+
+
+model Category {
+  id         String     @id @default(uuid())
+  name       String     @unique
+  businesses Business[]
+}
+
+model SubCategory {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  categoryId  String
+  category    Category  @relation(fields: [categoryId], references: [id])
+  businesses  Business[]
+}
+
+model SocialMediaLink {
+  id          String    @id @default(uuid())
+  platform    String
+  url         String
+  businessId  String
+  business    Business  @relation(fields: [businessId], references: [id])
+}
+
+
+model Service {
+  id          String    @id @default(uuid())
+  name        String
+  description String?
+  businessId  String
+  business    Business  @relation(fields: [businessId], references: [id])
+}
+
 
 
 // Comment model
