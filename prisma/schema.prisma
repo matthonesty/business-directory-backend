@@ -27,37 +27,23 @@ model User {
    passwordResetTokens PasswordResetToken[]
 }
 
-// Business model
+// Update the Business model to reference Category
 model Business {
-  id                     String     @id @default(uuid())
-  ownerId                String
+  id                     String   @id @default(uuid())
   businessName           String
-  brandName              String?
-  businessLicenseNumber  String?
-  businessAddress        String?
-  businessPhone          String?
-  businessEmail          String?   // Added field for business email
-  websiteUrl             String?   // Added field for business website
-  verified               Boolean    @default(false)
-  openingTime            DateTime?
-  closingTime            DateTime?
-  latitude               Decimal    @db.Decimal(10, 7) // Adjusted precision for more accuracy
-  longitude              Decimal    @db.Decimal(10, 7) // Adjusted precision for more accuracy
-  categoryId             String     // Added field to categorize businesses
-  subcategoryId          String?    // Optional subcategory
-  owner                  User       @relation("BusinessOwner", fields: [ownerId], references: [id])
-  comments               Comment[]
-  ratings                Rating[]
-  favorites              Favorite[]
-  photos                 Photo[]
-  socialMediaLinks       SocialMediaLink[] // Added relation to a new model for social media links
-  category               Category   @relation(fields: [categoryId], references: [id])  // Added relation to category
-  subcategory            SubCategory? @relation(fields: [subcategoryId], references: [id]) // Added relation to subcategory
-  services               Service[]  // Added relation to a new model for services offered
-  createdAt              DateTime   @default(now())
-  updatedAt              DateTime   @updatedAt
+  ownerId                String
+  categoryId             String
+  businessEmail          String   @unique
+  businessAddress        String
+  businessPhone          String   @unique
+  websiteUrl             String?
+  latitude               Float?
+  longitude              Float?
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+  owner                  User     @relation(fields: [ownerId], references: [id])
+  category               Category @relation(fields: [categoryId], references: [id]) // Establish relationship
 }
-
 
 model Category {
   id         String     @id @default(uuid())
