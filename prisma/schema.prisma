@@ -17,7 +17,7 @@ model User {
   password            String
   firstname           String?
   lastname            String?
-  businesses          Business[]           @relation("BusinessOwner")
+  businesses          Business[]           @relation("UserBusinesses")
   comments            Comment[]
   ratings             Rating[]
   favorites           Favorite[]
@@ -40,7 +40,7 @@ model Business {
   longitude        Float?
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
-  owner            User              @relation("BusinessOwner", fields: [ownerId], references: [id])
+  owner            User              @relation("UserBusinesses", fields: [ownerId], references: [id])
   category         Category          @relation(fields: [categoryId], references: [id])
   subCategoryId    String?
   subCategory      SubCategory?      @relation(fields: [subCategoryId], references: [id])
@@ -72,7 +72,7 @@ model SubCategory {
 // SocialMediaLink model
 model SocialMediaLink {
   id         String   @id @default(uuid())
-  platform   String
+  platform   String   // Consider using an enum for platform
   url        String
   businessId String
   business   Business @relation(fields: [businessId], references: [id])
