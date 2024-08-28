@@ -4,10 +4,13 @@ const express = require('express');
 const router = express.Router();
 const businessController = require('../controllers/businessController');
 
-// Register a business
+// Route to register a new business
 router.post('/register', businessController.registerBusiness);
 
-// Fetch all businesses
+// Route to get all businesses
 router.get('/', businessController.getAllBusinesses);
+
+// Route to get a specific business by ID
+router.get('/:id', businessController.getBusinessById);
 
 module.exports = router;
