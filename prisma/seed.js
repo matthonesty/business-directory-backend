@@ -1,5 +1,3 @@
-// prisma/seed.js
-
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
@@ -23,9 +21,20 @@ async function main() {
     ];
 
     for (const category of categories) {
-        await prisma.category.create({
-            data: category,
+        // Check if the category already exists
+        const existingCategory = await prisma.category.findUnique({
+            where: { name: category.name },
         });
+
+        if (!existingCategory) {
+            // Create the category if it does not exist
+            await prisma.category.create({
+                data: category,
+            });
+            console.log(`Category "${category.name}" created.`);
+        } else {
+            console.log(`Category "${category.name}" already exists.`);
+        }
     }
 
     console.log('Categories seeded!');
