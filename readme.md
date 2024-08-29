@@ -1,4 +1,3 @@
-Here's an updated and more professional version of the README for the business directory backend repository:
 
 ---
 
@@ -138,5 +137,3 @@ For questions or suggestions, please reach out:
 - Yeabsira Behailu: [GitHub Profile](https://github.com/Yabe12)
 
 ---
-
-This README provides a detailed overview of the Business Directory Backend project, including setup instructions, API endpoints, and contact information for maintainers. Be sure to update any placeholders with actual project-specific details before publishing.
