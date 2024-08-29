@@ -22,6 +22,18 @@ exports.registerBusiness = async (req, res) => {
             longitude
         } = req.body;
 
+
+         // Validate that the categoryId exists in the database
+         const category = await prisma.category.findUnique({
+            where: { id: categoryId }
+        });
+
+        if (!category) {
+            return res.status(400).json({ message: "Invalid category ID" });
+        }
+
+        
+
         // Create a new business with the provided data
         const newBusiness = await prisma.business.create({
             data: {
