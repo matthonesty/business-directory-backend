@@ -58,6 +58,8 @@ exports.getAllBusinesses = async (req, res) => {
             },
         });
 
+        
+
         // Respond with the list of businesses
         res.status(200).json(businesses);
     } catch (error) {
