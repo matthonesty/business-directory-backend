@@ -13,4 +13,7 @@ router.get('/', businessController.getAllBusinesses);
 // Route to get a specific business by ID
 router.get('/:id', businessController.getBusinessById);
 
+// Search businesses by category
+router.get('/search', businessController.searchBusinessesByCategory);
+
 module.exports = router;
