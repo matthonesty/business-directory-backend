@@ -104,6 +104,7 @@ This repository contains the backend code for the **Business Directory** platfor
   - `PUT /api/admin/approve-business/:id`: Approve a business registration.
   - `DELETE /api/admin/reject-business/:id`: Reject a business registration.
 
+  
 ### Running Tests
 
 To run tests, execute the following command in the root directory:
