@@ -108,3 +108,40 @@ exports.getBusinessById = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+
+exports.searchBusinessesByCategory = async (req, res) => {
+    const { categoryId } = req.query;
+
+    // Validate categoryId input
+    if (!categoryId) {
+        return res.status(400).json({ message: "Category ID is required" });
+    }
+
+    try {
+        // Check if the category exists
+        const category = await prisma.category.findUnique({
+            where: { id: parseInt(categoryId) },
+        });
+
+        if (!category) {
+            return res.status(404).json({ message: "Category not found" });
+        }
+
+        // Fetch businesses associated with the specified category
+        const businesses = await prisma.business.findMany({
+            where: {
+                categoryId: parseInt(categoryId),
+            },
+            include: {
+                category: true, // Include category details
+            },
+        });
+
+        // Respond with the list of businesses
+        res.status(200).json(businesses);
+    } catch (error) {
+        // Handle errors and respond with appropriate message
+        res.status(500).json({ error: error.message });
+    }
+};
