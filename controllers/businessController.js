@@ -1,5 +1,3 @@
-// controllers/businessController.js
-
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
@@ -12,9 +10,8 @@ exports.registerBusiness = async (req, res) => {
     try {
         const {
             businessName,
-            ownerId,
+            businessEmail, // This will be used to find the user
             categoryId, // The selected category ID
-            businessEmail,
             businessAddress,
             businessPhone,
             websiteUrl,
@@ -22,9 +19,8 @@ exports.registerBusiness = async (req, res) => {
             longitude
         } = req.body;
 
-
-         // Validate that the categoryId exists in the database
-         const category = await prisma.category.findUnique({
+        // Validate that the categoryId exists in the database
+        const category = await prisma.category.findUnique({
             where: { id: categoryId }
         });
 
@@ -32,13 +28,20 @@ exports.registerBusiness = async (req, res) => {
             return res.status(400).json({ message: "Invalid category ID" });
         }
 
-        
+        // Find the user by email to get the ownerId
+        const user = await prisma.user.findUnique({
+            where: { email: businessEmail }
+        });
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
 
         // Create a new business with the provided data
         const newBusiness = await prisma.business.create({
             data: {
                 businessName,
-                ownerId,
+                ownerId: user.id, // Use the ID of the user
                 categoryId, // Associate business with selected category
                 businessEmail,
                 businessAddress,
@@ -69,8 +72,6 @@ exports.getAllBusinesses = async (req, res) => {
                 category: true, // Include category details
             },
         });
-
-        
 
         // Respond with the list of businesses
         res.status(200).json(businesses);
@@ -110,38 +111,115 @@ exports.getBusinessById = async (req, res) => {
 };
 
 
-exports.searchBusinessesByCategory = async (req, res) => {
-    const { categoryId } = req.query;
+// controllers/businessController.js
 
-    // Validate categoryId input
-    if (!categoryId) {
-        return res.status(400).json({ message: "Category ID is required" });
-    }
+/**
+ * Get category details by ID
+ * This function fetches the name of a category based on its ID.
+ */
+exports.getCategoryById = async (req, res) => {
+    const { categoryId } = req.params;
 
     try {
-        // Check if the category exists
+        // Validate the category ID format
+        if (!isValidUUID(categoryId)) {
+            return res.status(400).json({ message: "Invalid category ID format" });
+        }
+
+        // Fetch the category by ID
         const category = await prisma.category.findUnique({
-            where: { id: parseInt(categoryId) },
+            where: { id: categoryId },
         });
 
+        // If the category is not found, respond with an appropriate message
         if (!category) {
             return res.status(404).json({ message: "Category not found" });
         }
 
-        // Fetch businesses associated with the specified category
+        // Respond with the category details
+        res.status(200).json(category);
+    } catch (error) {
+        // Handle errors and respond with an appropriate message
+        res.status(500).json({ error: error.message });
+    }
+};
+exports.getBusinessesByCategoryId = async (req, res) => {
+    const { categoryId } = req.params;
+
+    console.log('Received categoryId:', categoryId); // Log the received ID
+
+    try {
+        // Ensure the categoryId is a valid UUID
+        if (!isValidUUID(categoryId)) {
+            return res.status(400).json({ message: "Invalid category ID format" });
+        }
+
+        // Check if the category exists
+        const categoryExists = await prisma.category.findUnique({
+            where: { id: categoryId },
+        });
+
+        if (!categoryExists) {
+            return res.status(404).json({ message: "Category not found" });
+        }
+
+        // Fetch all businesses that belong to the given categoryId
         const businesses = await prisma.business.findMany({
-            where: {
-                categoryId: parseInt(categoryId),
-            },
+            where: { categoryId },
             include: {
-                category: true, // Include category details
+                category: true, // Include category details if needed
             },
         });
+
+        // If no businesses are found, respond with an appropriate message
+        if (businesses.length === 0) {
+            return res.status(404).json({ message: "No businesses found for this category" });
+        }
 
         // Respond with the list of businesses
         res.status(200).json(businesses);
     } catch (error) {
-        // Handle errors and respond with appropriate message
+        // Handle errors and respond with an appropriate message
         res.status(500).json({ error: error.message });
     }
+};
+// controllers/businessController.js
+
+/**
+ * Get all businesses by name
+ * This function fetches all businesses that match the provided business name.
+ */
+exports.getBusinessesByName = async (req, res) => {
+    const { name } = req.params;
+
+    try {
+        // Fetch all businesses that match the provided name
+        const businesses = await prisma.business.findMany({
+            where: {
+                businessName: {
+                    contains: name, // Use 'contains' to allow partial matches
+                    mode: 'insensitive' // Case-insensitive search
+                }
+            },
+            include: {
+                category: true, // Include category details if needed
+            },
+        });
+
+        // If no businesses are found, respond with an appropriate message
+        if (businesses.length === 0) {
+            return res.status(404).json({ message: "No businesses found with this name" });
+        }
+
+        // Respond with the list of businesses
+        res.status(200).json(businesses);
+    } catch (error) {
+        // Handle errors and respond with an appropriate message
+        res.status(500).json({ error: error.message });
+    }
+};
+
+const isValidUUID = (id) => {
+    const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+    return uuidRegex.test(id);
 };
