@@ -185,30 +185,55 @@ exports.getBusinessesByCategoryId = async (req, res) => {
 };
 // controllers/businessController.js
 
-/**
- * Get all businesses by name
- * This function fetches all businesses that match the provided business name.
- */
-exports.getBusinessesByName = async (req, res) => {
-    const { name } = req.params;
+
+
+exports.getBusinessesBySearchCriteria = async (req, res) => {
+    const { name, address, service } = req.query; // Use query parameters for more flexibility
 
     try {
-        // Fetch all businesses that match the provided name
-        const businesses = await prisma.business.findMany({
-            where: {
-                businessName: {
-                    contains: name, // Use 'contains' to allow partial matches
-                    mode: 'insensitive' // Case-insensitive search
+        // Construct a dynamic search object
+        const searchConditions = {};
+
+        // Add condition for business name
+        if (name) {
+            searchConditions.businessName = {
+                contains: name,
+                mode: 'insensitive'
+            };
+        }
+
+        // Add condition for business address
+        if (address) {
+            searchConditions.businessAddress = {
+                contains: address,
+                mode: 'insensitive'
+            };
+        }
+
+        // Add condition for services (assuming services is a related model)
+        if (service) {
+            searchConditions.services = {
+                some: {
+                    serviceName: {
+                        contains: service,
+                        mode: 'insensitive'
+                    }
                 }
-            },
+            };
+        }
+
+        // Fetch businesses that match the search conditions
+        const businesses = await prisma.business.findMany({
+            where: searchConditions,
             include: {
-                category: true, // Include category details if needed
+                category: true,  // Include category details if needed
+                services: true,  // Include services details if needed
             },
         });
 
         // If no businesses are found, respond with an appropriate message
         if (businesses.length === 0) {
-            return res.status(404).json({ message: "No businesses found with this name" });
+            return res.status(404).json({ message: "No businesses found matching the search criteria" });
         }
 
         // Respond with the list of businesses
@@ -218,6 +243,8 @@ exports.getBusinessesByName = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+
 
 const isValidUUID = (id) => {
     const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;

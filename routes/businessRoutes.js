@@ -14,5 +14,7 @@ router.get('/', businessController.getAllBusinesses);
 router.get('/:id', businessController.getBusinessById);
 router.get('/businesses/category/:categoryId', businessController.getBusinessesByCategoryId);
 router.get('/categories/:categoryId', businessController.getCategoryById);
-router.get('/businesses/name/:name', businessController.getBusinessesByName);
+// router.get('/businesses/name/:name', businessController.getBusinessesByName);
+router.get('/businesses/search', businessController.getBusinessesBySearchCriteria);
+
 module.exports = router;
