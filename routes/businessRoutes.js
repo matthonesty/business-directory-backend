@@ -15,4 +15,4 @@ router.get('/:id', businessController.getBusinessById);
 router.get('/businesses/category/:categoryId', businessController.getBusinessesByCategoryId);
 router.get('/categories/:categoryId', businessController.getCategoryById);
 router.get('/businesses/name/:name', businessController.getBusinessesByName);
-// module.exports = router;
+module.exports = router;
