@@ -5,8 +5,7 @@ const prisma = new PrismaClient();
  * Register a new business
  * This function allows a business owner to register their business by providing required details
  * including category selection from predefined categories.
- */
-exports.registerBusiness = async (req, res) => {
+ */exports.registerBusiness = async (req, res) => {
     try {
         const {
             businessName,
@@ -15,9 +14,13 @@ exports.registerBusiness = async (req, res) => {
             businessAddress,
             businessPhone,
             websiteUrl,
-            latitude,
-            longitude
+            latitude, // Make sure this is a Float
+            longitude // Make sure this is a Float
         } = req.body;
+
+        // Convert latitude and longitude to Float
+        const latitudeFloat = parseFloat(latitude);
+        const longitudeFloat = parseFloat(longitude);
 
         // Validate that the categoryId exists in the database
         const category = await prisma.category.findUnique({
@@ -47,8 +50,8 @@ exports.registerBusiness = async (req, res) => {
                 businessAddress,
                 businessPhone,
                 websiteUrl,
-                latitude,
-                longitude,
+                latitude: latitudeFloat, // Use Float values
+                longitude: longitudeFloat, // Use Float values
             },
         });
 
@@ -60,10 +63,6 @@ exports.registerBusiness = async (req, res) => {
     }
 };
 
-/**
- * Get all businesses
- * This function fetches all businesses along with their associated category details.
- */
 exports.getAllBusinesses = async (req, res) => {
     try {
         // Fetch all businesses and include their associated category details
