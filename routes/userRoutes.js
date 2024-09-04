@@ -11,6 +11,7 @@ router.put("/profile", authMiddleware, userController.updateProfile);
 router.post("/forgot-password", userController.forgotPassword);
 router.post("/reset-password", userController.resetPassword);
 router.delete("/profile", authMiddleware, userController.deleteProfile);
+
 router.get("/test", (req, res) => {
   res.send("Test route is working");
 });

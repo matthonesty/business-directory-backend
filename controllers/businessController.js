@@ -249,3 +249,104 @@ const isValidUUID = (id) => {
     const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
     return uuidRegex.test(id);
 };
+/**
+ * Delete a business by ID
+ * This function deletes a business identified by its ID.
+ */
+/**
+ * Delete a business by ID
+ * This function deletes a business identified by its ID.
+ */
+exports.deleteBusiness = async (req, res) => {
+    const { id } = req.body;  // Business ID to delete
+
+    try {
+        // Check if the business exists
+        const business = await prisma.business.findUnique({
+            where: { id },
+        });
+
+        if (!business) {
+            return res.status(404).json({ message: 'Business not found' });
+        }
+
+        // Delete the business
+        await prisma.business.delete({
+            where: { id },
+        });
+
+        // Respond with a success message
+        res.status(200).json({ message: 'Business deleted successfully' });
+    } catch (error) {
+        // Handle errors and respond with an appropriate message
+        res.status(500).json({ error: error.message });
+    }
+};
+
+/**
+ * Update a business by ID
+ * This function updates the details of a business identified by its ID.
+ *//**
+ * Update a business by ID
+ * This function updates the details of a business identified by its ID.
+ */
+exports.updateBusiness = async (req, res) => {
+    const {
+        id,  // Business ID to update
+        businessName,
+        businessEmail,
+        categoryId,
+        businessAddress,
+        businessPhone,
+        websiteUrl,
+        latitude,
+        longitude,
+    } = req.body;
+
+    try {
+        // Convert latitude and longitude to Float if provided
+        const latitudeFloat = latitude ? parseFloat(latitude) : undefined;
+        const longitudeFloat = longitude ? parseFloat(longitude) : undefined;
+
+        // Validate the categoryId if provided
+        if (categoryId) {
+            const category = await prisma.category.findUnique({
+                where: { id: categoryId }
+            });
+
+            if (!category) {
+                return res.status(400).json({ message: "Invalid category ID" });
+            }
+        }
+
+        // Check if the business exists
+        const business = await prisma.business.findUnique({
+            where: { id },
+        });
+
+        if (!business) {
+            return res.status(404).json({ message: 'Business not found' });
+        }
+
+        // Update the business with the provided data
+        const updatedBusiness = await prisma.business.update({
+            where: { id },
+            data: {
+                businessName,
+                businessEmail,
+                categoryId,
+                businessAddress,
+                businessPhone,
+                websiteUrl,
+                latitude: latitudeFloat,
+                longitude: longitudeFloat,
+            },
+        });
+
+        // Respond with the updated business details
+        res.status(200).json(updatedBusiness);
+    } catch (error) {
+        // Handle errors and respond with an appropriate message
+        res.status(500).json({ error: error.message });
+    }
+};
