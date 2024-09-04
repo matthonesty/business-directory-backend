@@ -249,16 +249,14 @@ const isValidUUID = (id) => {
     const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
     return uuidRegex.test(id);
 };
+/// controllers/businessController.js
+
 /**
  * Delete a business by ID
  * This function deletes a business identified by its ID.
  */
-/**
- * Delete a business by ID
- * This function deletes a business identified by its ID.
- */
-exports.deleteBusiness = async (req, res) => {
-    const { id } = req.body;  // Business ID to delete
+exports.deleteBusinessById = async (req, res) => {
+    const { id } = req.params;
 
     try {
         // Check if the business exists
@@ -286,13 +284,10 @@ exports.deleteBusiness = async (req, res) => {
 /**
  * Update a business by ID
  * This function updates the details of a business identified by its ID.
- *//**
- * Update a business by ID
- * This function updates the details of a business identified by its ID.
  */
-exports.updateBusiness = async (req, res) => {
+exports.updateBusinessById = async (req, res) => {
+    const { id } = req.params;
     const {
-        id,  // Business ID to update
         businessName,
         businessEmail,
         categoryId,
