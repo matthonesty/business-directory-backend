@@ -3,19 +3,20 @@
 
 # Business Directory Backend
 
-## Table of Contents
+## 📑 Table of Contents
 
-1. [Project Overview](#project-overview)
-2. [Features](#features)
-3. [Technologies Used](#technologies-used)
-4. [Getting Started](#getting-started)
-   - [Prerequisites](#prerequisites)
-   - [Installation](#installation)
-5. [API Endpoints](#API-Manual-for-Business-Directory-Project)
-6. [Running Tests](#running-tests)
-7. [Contributing](#contributing)
-8. [License](#license)
-9. [Contact](#contact)
+1. [📖 Project Overview](#project-overview)
+2. [✨ Features](#features)
+3. [🛠️ Technologies Used](#technologies-used)
+4. [🚀 Getting Started](#getting-started)
+   - [🔧 Prerequisites](#prerequisites)
+   - [⚙️ Installation](#installation)
+5. [📚 API Manual for Business Directory Project](#API-Manual-for-Business-Directory-Project)
+6. [🧪 Running Tests](#running-tests)
+7. [🤝 Contributing](#contributing)
+8. [📜 License](#license)
+9. [📞 Contact](#contact)
+
 
 ## Project Overview
 
