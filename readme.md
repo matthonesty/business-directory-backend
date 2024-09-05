@@ -3,6 +3,12 @@
 
 # Business Directory Backend
 
+## 🙏 Acknowledgment
+
+We would like to extend our heartfelt thanks to **Etech Company** for providing us with the incredible opportunity to work on this project during our internship. Your support and guidance have been invaluable in helping us develop our skills and grow as developers.
+
+Additionally, we would like to thank all of our friends who offered insights, suggestions, and encouragement throughout the development process. Your input played a significant role in shaping the success of this project!
+
 ## 📑 Table of Contents
 
 1. [📖 Project Overview](#project-overview)
@@ -11,11 +17,12 @@
 4. [🚀 Getting Started](#getting-started)
    - [🔧 Prerequisites](#prerequisites)
    - [⚙️ Installation](#installation)
-5. [📚 API Manual for Business Directory Project](#API-Manual-for-Business-Directory-Project)
+5. [📚 API Manual for Business Directory Project](#api-manual-for-business-directory-project)
 6. [🧪 Running Tests](#running-tests)
 7. [🤝 Contributing](#contributing)
 8. [📜 License](#license)
 9. [📞 Contact](#contact)
+
 
 
 ## Project Overview
