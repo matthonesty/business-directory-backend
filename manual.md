@@ -178,7 +178,7 @@ GET /api/businesses/123
 ```
 ### 4. Update Business
 
-- **Endpoint**: `/api/businesses/{BUSINESS_ID}`
+- **Endpoint**: `/api/businesses/business/{BUSINESS_ID}`
 - **Method**: `PUT`
 - **Purpose**: Update the details of an existing business.
 - **Required Fields**:
