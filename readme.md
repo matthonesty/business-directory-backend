@@ -25,11 +25,11 @@ Additionally, we would like to thank all of our friends who offered insights, su
 
 
 
-## Project Overview
+## 📖 Project Overview
 
 This repository contains the backend code for the **Business Directory** platform, a service designed to connect business owners and users by enabling businesses to be registered, rated, and managed efficiently. The backend is built using Node.js and Express and leverages PostgreSQL for data storage. Key features include JWT authentication for security, role-based access control to differentiate between regular users, business owners, and admins, and a RESTful API for interacting with the platform's data.
 
-## Features
+## ✨Features
 
 - **Business Registration**: Allows business owners to register their businesses by selecting from a predefined list of categories.
 - **User Authentication**: Secure user authentication using JWT (JSON Web Token) for session management.
@@ -39,7 +39,7 @@ This repository contains the backend code for the **Business Directory** platfor
 - **Data Persistence**: Uses PostgreSQL for robust data storage and management.
 - **Category Management**: Businesses are categorized into predefined categories, facilitating easy search and filtering.
 
-## Technologies Used
+## 🛠️ Technologies Used
 
 - **Node.js**: JavaScript runtime for building scalable network applications.
 - **Express**: Web framework for Node.js, used for building RESTful APIs and handling HTTP requests.
@@ -48,15 +48,15 @@ This repository contains the backend code for the **Business Directory** platfor
 - **JWT (JSON Web Tokens)**: Used for implementing secure authentication and authorization.
 - **Nodemon**: Development tool to automatically restart the server upon detecting file changes.
 
-## Getting Started
+## 🚀 Getting Started
 
-### Prerequisites
+### 🔧Prerequisites
 
 - **Node.js**: Install from [Node.js official website](https://nodejs.org/).
 - **PostgreSQL**: Install and set up PostgreSQL. Refer to the [official documentation](https://www.postgresql.org/docs/) for installation guidance.
 - **Docker** (Optional): For containerization and easier deployment of the application.
 
-### Installation
+### ⚙️Installation
 
 1. **Clone the Repository**:
 
@@ -108,7 +108,7 @@ This repository contains the backend code for the **Business Directory** platfor
     The server will start, and you can access the application at `http://localhost:5000`.
 
 
-# API Manual for Business Directory Project
+# 📚 API Manual for Business Directory Project
 
 ## Overview
 This manual provides detailed information about the API endpoints available in the Business Directory application. It includes descriptions, required fields, and example requests for both backend and frontend developers.
@@ -363,7 +363,7 @@ GET http://localhost:5000/api/businesses/categories/1
 
 
   
-### Running Tests
+### 🧪 Running Tests
 
 To run tests, execute the following command in the root directory:
 
@@ -373,7 +373,7 @@ npm test
 
 Tests are located in the `tests` directory and cover various functionalities of the application.
 
-## Contributing
+## 🤝 Contributing
 
 We welcome contributions from the community! To contribute:
 
@@ -384,11 +384,11 @@ We welcome contributions from the community! To contribute:
 5. Push to the branch (`git push origin feature-branch-name`).
 6. Create a Pull Request.
 
-## License
+## 📜 License
 
 This project is licensed under the MIT License. For more information, see the [LICENSE](LICENSE) file.
 
-## Contact
+## 📞 Contact
 
 For questions or suggestions, please reach out:
 
