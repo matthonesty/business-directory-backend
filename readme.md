@@ -9,19 +9,20 @@ We would like to extend our heartfelt thanks to **Etech Company** for providing 
 
 Additionally, we would like to thank all of our friends who offered insights, suggestions, and encouragement throughout the development process. Your input played a significant role in shaping the success of this project!
 
+
 ## 📑 Table of Contents
 
-1. [📖 Project Overview](#Project-Overview)
-2. [✨ Features](#Features)
-3. [🛠️ Technologies Used](#Technologies-Used)
-4. [🚀 Getting Started](#Getting-Started)
-   - [🔧 Prerequisites](#Prerequisites)
-   - [⚙️ Installation](#Installation)
-5. [📚 API Manual for Business Directory Project](#API-Manual-for-Business-Directory-Project)
-6. [🧪 Running Tests](#Running-Tests)
-7. [🤝 Contributing](#Contributing)
-8. [📜 License](#License)
-9. [📞 Contact](#Contact)
+1. [📖 Project Overview](#project-overview)
+2. [✨ Features](#features)
+3. [🛠️ Technologies Used](#technologies-used)
+4. [🚀 Getting Started](#getting-started)
+   - [🔧 Prerequisites](#prerequisites)
+   - [⚙️ Installation](#installation)
+5. [📚 API Manual for Business Directory Project](#api-manual-for-business-directory-project)
+6. [🧪 Running Tests](#running-tests)
+7. [🤝 Contributing](#contributing)
+8. [📜 License](#license)
+9. [📞 Contact](#contact)
 
 
 
