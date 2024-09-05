@@ -204,7 +204,7 @@ Content-Type: application/json
 ```
 ### 5. Delete Business
 
-- **Endpoint**: `/api/businesses/{BUSINESS_ID}`
+- **Endpoint**: `/api/businesses/business/{BUSINESS_ID}`
 - **Method**: `DELETE`
 - **Purpose**: Delete a specific business by its ID.
 - **Authentication**: Requires an authentication token.
