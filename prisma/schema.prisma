@@ -38,7 +38,8 @@ model Business {
     websiteUrl             String
     latitude               Float
     longitude              Float
-   
+    openingTime           String   // Ensure this field exists
+  closingTime           String
     businessLicenseNumber  Int? 
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
