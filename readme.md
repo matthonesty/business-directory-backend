@@ -259,14 +259,18 @@ Content-Type: application/json
 
 {
   "businessName": "Test Business",
-  "categoryId": "CATEGORY_ID_HERE",
   "businessEmail": "business@example.com",
+  "categoryId": "CATEGORY_ID_HERE",
   "businessAddress": "123 Business St",
   "businessPhone": "123-456-7890",
   "websiteUrl": "http://example.com",
   "latitude": 40.7128,
-  "longitude": -74.0060
+  "longitude": -74.0060,
+  "openingTime": "09:00",
+  "closingTime": "17:00",
+  "businessLicenseNumber": "123456789"
 }
+
 
 ```
 
