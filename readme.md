@@ -232,16 +232,23 @@ Authorization: Bearer YOUR_AUTH_TOKEN
 
 #### Required Fields
 
-| Field             | Description                                      |
-|-------------------|--------------------------------------------------|
-| `businessName`    | The name of the business.                       |
-| `businessEmail`   | The business owner email address this help as to find the owner .                   |
-| `categoryId`      | The ID of the category to which the business belongs. |
-| `businessAddress` | The physical address of the business.           |
-| `businessPhone`   | The contact phone number for the business.      |
-| `websiteUrl`      | The business's website URL.                     |
-| `latitude`        | The latitude coordinate of the business location.|
-| `longitude`       | The longitude coordinate of the business location.|
+
+| Field                | Description                                                                 |
+|----------------------|-----------------------------------------------------------------------------|
+| `businessName`        | The name of the business.                                                   |
+| `businessEmail`       | The email address of the business owner, used to identify the owner.        |
+| `categoryId`          | The ID of the category to which the business belongs.                       |
+| `subcategoryId`       | The ID of the subcategory to which the business belongs. **(New)**          |
+| `businessAddress`     | The physical address of the business.                                       |
+| `businessPhone`       | The contact phone number for the business.                                  |
+| `websiteUrl`          | The business's website URL.                                                 |
+| `latitude`            | The latitude coordinate of the business location.                           |
+| `longitude`           | The longitude coordinate of the business location.                          |
+| `openingTime`         | The opening time of the business.                              |
+| `closingTime`         | The closing time of the business.                               |
+| `businessLicenseNumber` | The license number of the business for verification purposes.  |
+
+
 
 #### Example Request
 
