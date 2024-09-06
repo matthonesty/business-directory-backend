@@ -31,6 +31,19 @@ Additionally, we would like to thank all of our friends who offered insights, su
 
 This repository contains the backend code for the **Business Directory** platform, a service designed to connect business owners and users by enabling businesses to be registered, rated, and managed efficiently. The backend is built using Node.js and Express and leverages PostgreSQL for data storage. Key features include JWT authentication for security, role-based access control to differentiate between regular users, business owners, and admins, and a RESTful API for interacting with the platform's data.
 
+
+
+## 📸 Screenshots
+![Projects Screenshots](./utils/image/2.jpg)
+
+
+
+
+![Projects Screenshots](./utils/image/3.jpg)
+
+
+---
+
 ## ✨Features
 
 - **Business Registration**: Allows business owners to register their businesses by selecting from a predefined list of categories.
