@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const businessRoutes=require("./routes/businessRoutes")
-const authRoutes = require("./routes/authRoutes");
+
 const userRoutes = require("./routes/userRoutes");
 
 // Middleware
@@ -9,7 +9,7 @@ app.use(express.json());
 
 // Use routes
 app.use("/api/users", userRoutes);
-app.use("/api/auth", authRoutes);
+
 app.use('/api/businesses', businessRoutes);
 
 // Error handling middleware
