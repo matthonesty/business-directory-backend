@@ -415,7 +415,7 @@ We welcome contributions from the community! To contribute:
 
 This project is licensed under the MIT License. For more information, see the [LICENSE](LICENSE) file.
 
-## 📞 Contact
+## 📞 Contact the developers 
 
 For questions or suggestions, please reach out:
 
