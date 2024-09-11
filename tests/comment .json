@@ -1,0 +1,46 @@
+{
+  "info": {
+    "_postman_id": "your-postman-id",
+    "name": "Business Directory API",
+    "description": "API endpoints for business directory",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Comment",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"username\": \"user-username\",\n    \"businessId\": \"business-id\",\n    \"comment\": \"This is a comment\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/comment",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "comment"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Comments by Business",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/comment/businesses/business-id/comments",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "comment", "businesses", "business-id", "comments"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
