@@ -3,11 +3,13 @@ const app = express();
 const businessRoutes=require("./routes/businessRoutes")
 const userRoutes = require("./routes/userRoutes");
 const commentsRoutes = require('./routes/commentsRoutes');
+const ratingRoutes=require('./routes/ratingRoutes')
 // Middleware
 app.use(express.json());
 
 // Use routes
 app.use("/api/users", userRoutes);
+app.use("/api/rating",ratingRoutes)
 app.use('/api/businesses', businessRoutes);
 app.use('/api/comment', commentsRoutes);
 // Error handling middleware
