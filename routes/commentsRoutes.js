@@ -1,12 +1,14 @@
-// routes/commentsRoutes.js
 const express = require('express');
 const router = express.Router();
-const commentsController = require('../controllers/commentsController');
+const { createComment, getCommentsByBusiness, deleteComment, updateComment } = require('../controllers/commentsController');
+const authenticateToken = require('../middleware/authMiddleware');
 
-// Route to create a comment
-router.post('/', commentsController.createComment);
+// Only logged-in users can create, update, or delete comments
+router.post('/comment', authenticateToken, createComment);
+router.put('/comment/:id', authenticateToken, updateComment);
+router.delete('/comment/:id', authenticateToken, deleteComment);
 
-// Route to get comments by business ID
-router.get('/businesses/:businessId/comments', commentsController.getCommentsByBusiness);
+// No authentication needed for fetching comments
+router.get('/comment/businesses/:businessId/comments', getCommentsByBusiness);
 
 module.exports = router;
