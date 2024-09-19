@@ -2,7 +2,6 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const upload = require('./../utils/upload'); 
-
 exports.registerBusiness = async (req, res) => {
     try {
         const {
@@ -16,8 +15,20 @@ exports.registerBusiness = async (req, res) => {
             longitude,
             openingTime,
             closingTime,
-            businessLicenseNumber
+            businessLicenseNumber,
         } = req.body;
+
+        // Upload images if provided
+        let profilePictureUrl = null;
+        let bannerUrl = null;
+
+        if (req.files && req.files.profilePicture) {
+            profilePictureUrl = req.files.profilePicture[0].path; // Assuming 'upload' middleware provides the file path
+        }
+
+        if (req.files && req.files.banner) {
+            bannerUrl = req.files.banner[0].path; // Assuming 'upload' middleware provides the file path
+        }
 
         // Convert latitude and longitude to Float
         const latitudeFloat = parseFloat(latitude);
@@ -28,20 +39,20 @@ exports.registerBusiness = async (req, res) => {
 
         // Validate that the categoryId exists in the database
         const category = await prisma.category.findUnique({
-            where: { id: categoryId }
+            where: { id: categoryId },
         });
 
         if (!category) {
-            return res.status(400).json({ message: "Invalid category ID" });
+            return res.status(400).json({ message: 'Invalid category ID' });
         }
 
         // Validate that the user exists in the database
         const user = await prisma.user.findUnique({
-            where: { email: businessEmail }
+            where: { email: businessEmail },
         });
 
         if (!user) {
-            return res.status(404).json({ message: "User not found" });
+            return res.status(404).json({ message: 'User not found' });
         }
 
         const newBusiness = await prisma.business.create({
@@ -55,10 +66,12 @@ exports.registerBusiness = async (req, res) => {
                 websiteUrl,
                 latitude: latitudeFloat,
                 longitude: longitudeFloat,
-                openingTime, // Save opening time
-                closingTime, // Save closing time
-                businessLicenseNumber: businessLicenseNumberInt // Save business license number
-            }
+                openingTime,
+                closingTime,
+                businessLicenseNumber: businessLicenseNumberInt,
+                profilePicture: profilePictureUrl, // Save profile picture URL
+                banner: bannerUrl, // Save banner URL
+            },
         });
 
         res.status(201).json(newBusiness);
@@ -66,7 +79,6 @@ exports.registerBusiness = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
 exports.getAllBusinesses = async (req, res) => {
     try {
         const businesses = await prisma.business.findMany({
