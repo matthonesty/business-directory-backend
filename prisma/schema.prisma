@@ -29,32 +29,35 @@ model User {
 
 // Business model
 model Business {
-    id                     String   @id @default(uuid())
-    businessName           String
-    ownerId                String
-    categoryId             String
-    businessEmail          String
-    businessAddress        String
-    businessPhone          String
-    websiteUrl             String
-    latitude               Float
-    longitude              Float
-    openingTime           String   // Ensure this field exists
-    closingTime           String
-    businessLicenseNumber  Int? 
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-  owner            User              @relation("UserBusinesses", fields: [ownerId], references: [id])
-  category         Category          @relation(fields: [categoryId], references: [id])
-  subCategoryId    String?
-  subCategory      SubCategory?      @relation(fields: [subCategoryId], references: [id])
-  socialMediaLinks SocialMediaLink[]
-  services         Service[]
-  comments         Comment[]
-  ratings          Rating[]
-  favorites        Favorite[]
-  photos           Photo[]
+  id                     String   @id @default(uuid())
+  businessName           String
+  ownerId                String
+  categoryId             String
+  businessEmail          String
+  businessAddress        String
+  businessPhone          String
+  websiteUrl             String
+  latitude               Float
+  longitude              Float
+  openingTime            String
+  closingTime            String
+  businessLicenseNumber  Int?
+  bannerImage            String?  // Field for banner image
+  profilePicture         String?  // Field for profile picture
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+  owner                  User     @relation("UserBusinesses", fields: [ownerId], references: [id])
+  category               Category @relation(fields: [categoryId], references: [id])
+  subCategoryId          String?
+  subCategory            SubCategory?      @relation(fields: [subCategoryId], references: [id])
+  socialMediaLinks       SocialMediaLink[]
+  services               Service[]
+  comments               Comment[]
+  ratings                Rating[]
+  favorites              Favorite[]
+  photos                 Photo[]
 }
+
 
 // Category model
 model Category {
