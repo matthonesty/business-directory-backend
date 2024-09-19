@@ -3,6 +3,8 @@ const app = express();
 const businessRoutes=require("./routes/businessRoutes")
 const userRoutes = require("./routes/userRoutes");
 
+app.use('/uploads', express.static('uploads'));
+
 // Middleware
 app.use(express.json());
 
