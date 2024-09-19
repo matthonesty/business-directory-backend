@@ -243,7 +243,6 @@ exports.deleteBusinessById = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
 exports.updateBusinessById = async (req, res) => {
     const { id } = req.params;
     const {
@@ -257,7 +256,7 @@ exports.updateBusinessById = async (req, res) => {
         longitude,
         openingTime,
         closingTime,
-        businessLicenseNumber
+        businessLicenseNumber,
     } = req.body;
 
     try {
@@ -266,11 +265,11 @@ exports.updateBusinessById = async (req, res) => {
 
         if (categoryId) {
             const category = await prisma.category.findUnique({
-                where: { id: categoryId }
+                where: { id: categoryId },
             });
 
             if (!category) {
-                return res.status(400).json({ message: "Invalid category ID" });
+                return res.status(400).json({ message: 'Invalid category ID' });
             }
         }
 
@@ -280,6 +279,18 @@ exports.updateBusinessById = async (req, res) => {
 
         if (!business) {
             return res.status(404).json({ message: 'Business not found' });
+        }
+
+        // Upload images if provided
+        let profilePictureUrl = business.profilePicture;
+        let bannerUrl = business.banner;
+
+        if (req.files && req.files.profilePicture) {
+            profilePictureUrl = req.files.profilePicture[0].path; // Assuming 'upload' middleware provides the file path
+        }
+
+        if (req.files && req.files.banner) {
+            bannerUrl = req.files.banner[0].path; // Assuming 'upload' middleware provides the file path
         }
 
         const updatedBusiness = await prisma.business.update({
@@ -295,7 +306,9 @@ exports.updateBusinessById = async (req, res) => {
                 longitude: longitudeFloat,
                 openingTime,
                 closingTime,
-                businessLicenseNumber: businessLicenseNumber ? parseInt(businessLicenseNumber, 10) : undefined
+                businessLicenseNumber: businessLicenseNumber ? parseInt(businessLicenseNumber, 10) : undefined,
+                profilePicture: profilePictureUrl, // Update profile picture URL
+                banner: bannerUrl, // Update banner URL
             },
         });
 
