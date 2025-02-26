@@ -1,9 +1,25 @@
 const express = require("express");
 const app = express();
+const cors = require('cors');
 const businessRoutes=require("./routes/businessRoutes")
 const userRoutes = require("./routes/userRoutes");
 const fs = require('fs');
 const path = require('path');
+
+// CORS Configuration
+const corsOptions = {
+  origin: [
+    'https://business-directory-frontend-chi.vercel.app', 
+    'http://localhost:3000'  // For local development
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  maxAge: 86400 // 24 hours
+};
+
+// Apply CORS middleware
+app.use(cors(corsOptions));
 
 app.use(express.json({ limit: '10mb' }));
 
