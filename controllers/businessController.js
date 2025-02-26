@@ -1,4 +1,3 @@
-
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const upload = require('./../utils/upload'); 
@@ -81,15 +80,40 @@ exports.registerBusiness = async (req, res) => {
 };
 exports.getAllBusinesses = async (req, res) => {
     try {
+        console.log('Attempting to fetch all businesses...');
         const businesses = await prisma.business.findMany({
             include: {
                 category: true,
             },
         });
 
+        console.log(`Successfully retrieved ${businesses.length} businesses`);
         res.status(200).json(businesses);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error('Database error in getAllBusinesses:', error);
+        
+        // Check for specific Prisma errors
+        if (error.code === 'P1001') {
+            console.error('Cannot reach database server');
+            return res.status(500).json({ 
+                error: 'Database connection failed. Please check your DATABASE_URL configuration.' 
+            });
+        } else if (error.code === 'P1003') {
+            console.error('Database does not exist at the provided URL');
+            return res.status(500).json({ 
+                error: 'Database not found. Make sure your database exists and is properly migrated.' 
+            });
+        } else if (error.code === 'P2010' || error.code === 'P2011') {
+            console.error('Raw query failed');
+            return res.status(500).json({ 
+                error: 'Database query failed. There might be an issue with your database schema.' 
+            });
+        }
+        
+        res.status(500).json({ 
+            error: 'Internal server error when fetching businesses',
+            details: error.message 
+        });
     }
 };
 
