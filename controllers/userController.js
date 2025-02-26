@@ -6,6 +6,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const upload = require('./../utils/upload'); 
 const fs = require('fs');
+const path = require('path');
 
 
 // Helper function to validate password
@@ -98,56 +99,155 @@ exports.login = async (req, res) => {
   }
 };
 
-// Register new user
-exports.register = (req, res) => {
-  // Use upload.single to handle profile picture upload
+// Get user profile
+exports.getProfile = async (req, res) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: req.user.id },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        firstname: true,
+        lastname: true,
+        profilePicture: true,
+        createdAt: true,
+        updatedAt: true,
+        // Don't include password
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+// Update user profile
+exports.updateProfile = async (req, res) => {
+  // Use upload middleware to handle profile picture
   upload.single('profilePicture')(req, res, async (err) => {
     if (err) {
       return res.status(400).json({ message: err.message });
     }
 
-    const { username, email, password, firstname, lastname } = req.body;
-    let profilePictureUrl = req.file ? `/uploads/${req.file.filename}` : null;
-
     try {
-      const userByUsername = await prisma.user.findUnique({ where: { username } });
-      const userByEmail = await prisma.user.findUnique({ where: { email } });
-
-      if (userByUsername) {
-        return res.status(400).json({ message: "Username already taken" });
+      const { username, firstname, lastname, email } = req.body;
+      
+      // Get current user data
+      const currentUser = await prisma.user.findUnique({
+        where: { id: req.user.id },
+      });
+      
+      if (!currentUser) {
+        return res.status(404).json({ message: "User not found" });
       }
-
-      if (userByEmail) {
-        return res.status(400).json({ message: "Email already registered" });
-      }
-
-      if (!passwordValidation(password)) {
-        return res.status(400).json({
-          message: "Password must be at least 8 characters long and contain a letter and a special character",
+      
+      // Check if username is taken by another user
+      if (username && username !== currentUser.username) {
+        const existingUser = await prisma.user.findUnique({
+          where: { username },
         });
+        
+        if (existingUser) {
+          return res.status(400).json({ message: "Username already taken" });
+        }
       }
-
-      const salt = bcrypt.genSaltSync(10);
-      const passwordHash = bcrypt.hashSync(password, salt);
-
-      const newUser = await prisma.user.create({
+      
+      // Check if email is taken by another user
+      if (email && email !== currentUser.email) {
+        const existingUser = await prisma.user.findUnique({
+          where: { email },
+        });
+        
+        if (existingUser) {
+          return res.status(400).json({ message: "Email already registered" });
+        }
+      }
+      
+      // Handle profile picture update
+      let profilePictureUrl = currentUser.profilePicture;
+      
+      if (req.file) {
+        // If there's a new profile picture, update the URL
+        profilePictureUrl = `/uploads/${req.file.filename}`;
+        
+        // Delete old profile picture if it exists
+        if (currentUser.profilePicture) {
+          const oldPicPath = path.join(__dirname, '..', currentUser.profilePicture);
+          if (fs.existsSync(oldPicPath)) {
+            fs.unlinkSync(oldPicPath);
+          }
+        }
+      }
+      
+      // Update user in database
+      const updatedUser = await prisma.user.update({
+        where: { id: req.user.id },
         data: {
-          username,
-          email,
-          password: passwordHash,
-          firstname,
-          lastname,
-          profilePicture: profilePictureUrl, // Save profile picture URL in the database
+          username: username || currentUser.username,
+          firstname: firstname || currentUser.firstname,
+          lastname: lastname || currentUser.lastname,
+          email: email || currentUser.email,
+          profilePicture: profilePictureUrl,
+        },
+        select: {
+          id: true,
+          username: true,
+          email: true,
+          firstname: true,
+          lastname: true,
+          profilePicture: true,
+          createdAt: true,
+          updatedAt: true,
         },
       });
-
-      const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
-
-      res.status(201).json({ token, user: newUser });
+      
+      res.json({ message: "Profile updated successfully", user: updatedUser });
     } catch (error) {
-      res.status(500).json({ message: "Server error", error });
+      console.error("Error updating profile:", error);
+      res.status(500).json({ message: "Server error", error: error.message });
     }
   });
+};
+
+// Delete user profile
+exports.deleteProfile = async (req, res) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: req.user.id },
+    });
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    
+    // Delete user's profile picture if it exists
+    if (user.profilePicture) {
+      const picPath = path.join(__dirname, '..', user.profilePicture);
+      if (fs.existsSync(picPath)) {
+        fs.unlinkSync(picPath);
+      }
+    }
+    
+    // Delete all related records (this will depend on your database schema)
+    // For example, delete user's comments, ratings, etc.
+    
+    // Finally delete the user
+    await prisma.user.delete({
+      where: { id: req.user.id },
+    });
+    
+    res.json({ message: "User account deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting profile:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
 };
 
 exports.forgotPassword = async (req, res) => {
